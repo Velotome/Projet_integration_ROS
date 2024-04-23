@@ -10,8 +10,8 @@
     <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
     <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
     <group name="hc10_arm">
+        <joint name="virtual_joint"/>
         <joint name="world_fixed"/>
-        <joint name="base_link-base"/>
         <joint name="joint_1_s"/>
         <joint name="joint_2_l"/>
         <joint name="joint_3_u"/>

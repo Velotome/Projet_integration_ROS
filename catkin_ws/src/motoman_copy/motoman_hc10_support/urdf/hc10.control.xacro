@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!-- panda.control.xacro -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="hc10_control" params="arm_id">
+        <xacro:macro name="arm_control" params="transmission joint motor">
+            <transmission name="${transmission}">
+                <type>transmission_interface/SimpleTransmission</type>
+                <joint name="${joint}">
+                    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                </joint>
+                <actuator name="${motor}">
+                    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                    <mechanicalReduction>1</mechanicalReduction>
+                </actuator>
+            </transmission>
+            
+        </xacro:macro>
+        <xacro:arm_control transmission="${arm_id}tran_1" joint="${arm_id}joint_1_s" motor="${arm_id}motor_1"/>
+        <xacro:arm_control transmission="${arm_id}tran_2" joint="${arm_id}joint_2_l" motor="${arm_id}motor_2"/>
+        <xacro:arm_control transmission="${arm_id}tran_3" joint="${arm_id}joint_3_u" motor="${arm_id}motor_3"/>
+        <xacro:arm_control transmission="${arm_id}tran_4" joint="${arm_id}joint_4_r" motor="${arm_id}motor_4"/>
+        <xacro:arm_control transmission="${arm_id}tran_5" joint="${arm_id}joint_5_b" motor="${arm_id}motor_5"/>
+        <xacro:arm_control transmission="${arm_id}tran_6" joint="${arm_id}joint_6_t" motor="${arm_id}motor_6"/>
+        <xacro:arm_control transmission="${arm_id}tran_7" joint="${arm_id}joint_6_t-tool0" motor="${arm_id}motor_7"/>
+ 
+        <gazebo>
+            <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so"/>
+        </gazebo>
+
+    </xacro:macro>
+</robot>

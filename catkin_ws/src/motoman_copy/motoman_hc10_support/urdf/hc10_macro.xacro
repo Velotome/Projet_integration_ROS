@@ -73,7 +73,7 @@
       </visual>
       <collision>
         <geometry>
-          <mesh filename="package://motoman_hc10_support/meshes/hc10/collision/link_3_u.stl"/>
+          <mesh filename="package://motjoint_1_soman_hc10_support/meshes/hc10/collision/link_3_u.stl"/>
         </geometry>
       </collision>
     </link>

@@ -24,3 +24,9 @@ To generate the graph
 ```bash
 urdf_to_graphiz src/motoman_copy/motoman_hc10_support/urdf/model_hc10.urdf
 ```
+
+## Launch demo in Rviz with MoveIt
+
+```bash
+roslaunch hc10_moveit_config demo.launch 
+```

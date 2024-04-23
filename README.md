@@ -19,3 +19,8 @@ A version of the URDF is available in the repo from the start (catkin_ws/src/mot
 ```bash
 rosrun xacro xacro src/motoman_copy/motoman_hc10_support/urdf/hc10.xacro -o src/motoman_copy/motoman_hc10_support/urdf/model_hc10.urdf
 ```
+
+To generate the graph 
+```bash
+urdf_to_graphiz src/motoman_copy/motoman_hc10_support/urdf/model_hc10.urdf
+```

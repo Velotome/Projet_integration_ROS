@@ -30,3 +30,9 @@ urdf_to_graphiz src/motoman_copy/motoman_hc10_support/urdf/model_hc10.urdf
 ```bash
 roslaunch hc10_moveit_config demo.launch 
 ```
+
+## Launch demo in Gazebo & Rviz
+
+```bash
+roslaunch hc10_moveit_config demo_gazebo.launch 
+```

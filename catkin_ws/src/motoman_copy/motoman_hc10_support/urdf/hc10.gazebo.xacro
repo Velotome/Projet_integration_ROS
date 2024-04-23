@@ -9,7 +9,7 @@
                 <mu2>0.2</mu2>
             </gazebo>
         </xacro:macro>
-        <xacro:macro name="hand_gazebo" params="link">
+        <xacro:macro name="tool_gazebo" params="link">
             <gazebo reference="${link}">
                 <material>Gazebo/Grey</material>
                 <mu1>0.2</mu1>
@@ -23,6 +23,6 @@
         <xacro:arm_gazebo link="${arm_id}link_4_r"/>
         <xacro:arm_gazebo link="${arm_id}link_5_b"/>
         <xacro:arm_gazebo link="${arm_id}link_6_t"/>
-        <xacro:hand_gazebo link="${arm_id}tool0"/>
+        <xacro:tool_gazebo link="${arm_id}tool0"/>
     </xacro:macro>
 </robot>

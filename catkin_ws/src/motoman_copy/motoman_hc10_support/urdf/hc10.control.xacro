@@ -6,10 +6,10 @@
             <transmission name="${transmission}">
                 <type>transmission_interface/SimpleTransmission</type>
                 <joint name="${joint}">
-                    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
                 </joint>
                 <actuator name="${motor}">
-                    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
                     <mechanicalReduction>1</mechanicalReduction>
                 </actuator>
             </transmission>
@@ -21,7 +21,6 @@
         <xacro:arm_control transmission="${arm_id}tran_4" joint="${arm_id}joint_4_r" motor="${arm_id}motor_4"/>
         <xacro:arm_control transmission="${arm_id}tran_5" joint="${arm_id}joint_5_b" motor="${arm_id}motor_5"/>
         <xacro:arm_control transmission="${arm_id}tran_6" joint="${arm_id}joint_6_t" motor="${arm_id}motor_6"/>
-        <xacro:arm_control transmission="${arm_id}tran_7" joint="${arm_id}joint_6_t-tool0" motor="${arm_id}motor_7"/>
  
         <gazebo>
             <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so"/>

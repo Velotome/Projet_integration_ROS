@@ -11,7 +11,11 @@ cd catkin_ws
 catkin build
 . devel/setup.bash
 ```
+## Moveit Setup Assistant
 
+```bash
+roslaunch moveit_setup_assistant setup_assistant.launch
+```
 ## Re-generate URDF from xacro
 
 A version of the URDF is available in the repo from the start (catkin_ws/src/motoman_copy/motoman_hc10_support/urdf/model_hc10.urdf) but if modifications to the xacro files was made, you need to re-generate it. To do that execute the following command in a terminal from the catkin_ws folder.

@@ -44,6 +44,7 @@
 # Python 2/3 compatibility imports
 from __future__ import print_function
 from six.moves import input
+from scipy.spatial.transform import Rotation as rot
 
 import sys
 import copy
@@ -52,6 +53,7 @@ import moveit_commander
 import moveit_msgs.msg
 import geometry_msgs.msg
 import math
+import numpy as np
 
 try:
     from math import pi, tau, dist, fabs, cos
@@ -70,14 +72,23 @@ from moveit_commander.conversions import pose_to_list
 ## END_SUB_TUTORIAL
 
 COORD_X_OBJET = -0.40
-COORD_Y_OBJET = 0.15
-COORD_Z_OBJET = 0.35
+COORD_Y_OBJET = 0.35
+COORD_Z_OBJET = 0.55
 XC = COORD_X_OBJET
 YC = COORD_Y_OBJET
+former_pitch = 0
+former_yaw_z = 0
+former_roll = 0
+first_time = True
+
+
+
 D = 0.50
 R = D/2
 
 def main():
+    
+    first_time = True
     input("Hello man, press enter when you are radis:")
     moveit_commander.roscpp_initialize(sys.argv)
     rospy.init_node("trajectory_gen_moveit", anonymous=True)
@@ -94,6 +105,7 @@ def main():
         moveit_msgs.msg.DisplayTrajectory,
         queue_size=20,
     )
+    init_Pose = move_group.get_current_pose()
     
     rospy.sleep(2)
 
@@ -108,8 +120,54 @@ def main():
             move_group.get_current_pose(),
             x_i, y_i
         )
-
+        rospy.sleep(1)
+        
+        ##if(i%2 ==0 ):
         add_pose_to_traj(move_group ,new_pose)
+
+
+def euler_from_quaternion(x, y, z, w):
+        """
+        Convert a quaternion into euler angles (roll, pitch, yaw)
+        roll is rotation around x in radians (counterclockwise)
+        pitch is rotation around y in radians (counterclockwise)
+        yaw is rotation around z in radians (counterclockwise)
+        """
+        t0 = +2.0 * (w * x + y * z)
+        t1 = +1.0 - 2.0 * (x * x + y * y)
+        roll_x = math.atan2(t0, t1)
+     
+        t2 = +2.0 * (w * y - z * x)
+        t2 = +1.0 if t2 > +1.0 else t2
+        t2 = -1.0 if t2 < -1.0 else t2
+        pitch_y = math.asin(t2)
+     
+        t3 = +2.0 * (w * z + x * y)
+        t4 = +1.0 - 2.0 * (y * y + z * z)
+        yaw_z = math.atan2(t3, t4)
+     
+        return roll_x, pitch_y, yaw_z # in radians
+
+
+
+def get_quaternion_from_euler(roll, pitch, yaw):
+  """
+  Convert an Euler angle to a quaternion.
+   
+  Input
+    :param roll: The roll (rotation around x-axis) angle in radians.
+    :param pitch: The pitch (rotation around y-axis) angle in radians.
+    :param yaw: The yaw (rotation around z-axis) angle in radians.
+ 
+  Output
+    :return qx, qy, qz, qw: The orientation in quaternion [x,y,z,w] format
+  """
+  qx = np.sin(roll/2) * np.cos(pitch/2) * np.cos(yaw/2) - np.cos(roll/2) * np.sin(pitch/2) * np.sin(yaw/2)
+  qy = np.cos(roll/2) * np.sin(pitch/2) * np.cos(yaw/2) + np.sin(roll/2) * np.cos(pitch/2) * np.sin(yaw/2)
+  qz = np.cos(roll/2) * np.cos(pitch/2) * np.sin(yaw/2) - np.sin(roll/2) * np.sin(pitch/2) * np.cos(yaw/2)
+  qw = np.cos(roll/2) * np.cos(pitch/2) * np.cos(yaw/2) + np.sin(roll/2) * np.sin(pitch/2) * np.sin(yaw/2)
+ 
+  return [qx, qy, qz, qw]
 
 def add_box_to_scene(scene, robot):
     box_pose = geometry_msgs.msg.PoseStamped()
@@ -123,15 +181,84 @@ def add_box_to_scene(scene, robot):
 
 
 def generate_new_pose(current_pose, x, y):
+
+
     pose_goal = geometry_msgs.msg.Pose()
+    
+    roll_x, pitch_y, yaw_z = euler_from_quaternion(current_pose.pose.orientation.x, 
+                                                  current_pose.pose.orientation.y, 
+                                                  current_pose.pose.orientation.z, 
+                                                  current_pose.pose.orientation.w)
+    
+    print("x",roll_x / math.pi *180)
+    print("y",pitch_y / math.pi *180)
+    print("z",yaw_z / math.pi *180)
+    
+
+
+    ztool = [(COORD_X_OBJET - x),(COORD_Y_OBJET - y),(COORD_Z_OBJET - current_pose.pose.position.z)]
+    ztool = np.array(ztool) / np.linalg.norm(ztool)
+    xtool = np.cross(ztool,np.array([1,0,0])) 
+    xtool = np.array(xtool) / np.linalg.norm(xtool)
+    ytool = np.cross(ztool,xtool)
+    ytool = np.array(ytool) / np.linalg.norm(ytool)
+    mat_rot = np.matrix([xtool,ytool,ztool])
+    pi_d_mat = np.matrix([[0, 1 ,0],[1, 0 ,0],[0, 0, -1]])
+    print(pi_d_mat)
+    mat_rot = np.dot(pi_d_mat,mat_rot)
+    
+
+    print(np.linalg.norm(ytool))
+    print(np.linalg.norm(ztool))
+    print(np.linalg.norm(xtool))
+
+
+
+    print(mat_rot)
+    mat_rot = rot.from_matrix(mat_rot)
+    quat_com = mat_rot.as_quat()
+
+
+    rot2 = rot.from_quat(quat_com)
+    mat_rot2 = rot2.as_matrix()
+    print(mat_rot2)
+    
+    ##vect_rot = np.array([roll_x,pitch_y,yaw_z])
+    ##vect_com_rot = np.dot(vect_rot, mat_rot)
+    ##vect_com_rot = np.array(vect_com_rot[0])
+    
+    
+
+
+    
+    #[qx, qy, qz, qw] = get_quaternion_from_euler(vect_com_rot[0][0],vect_com_rot[0][1],vect_com_rot[0][2])
+    #print("Z_orr = ",(yaw_z + math.pi/4)* 180/math.pi)
+    
+
+    """
     pose_goal.orientation.x = current_pose.pose.orientation.x 
     pose_goal.orientation.y = current_pose.pose.orientation.y
-    pose_goal.orientation.z = current_pose.pose.orientation.z
+    pose_goal.orientation.z = current_pose.pose.orientation.z + math.pi/4
     pose_goal.orientation.w = current_pose.pose.orientation.w 
+
+    """
+
+    
+
+    
+    pose_goal.orientation.x = quat_com[0]
+    pose_goal.orientation.y = quat_com[1]
+    pose_goal.orientation.z = quat_com[2]
+    pose_goal.orientation.w = quat_com[3]
+
     pose_goal.position.x = x
     pose_goal.position.y = y
     pose_goal.position.z = current_pose.pose.position.z 
 
+    #print("X_orr = ",roll_x * 180/math.pi)
+    #print("Y_orr = ",pitch_y * 180/math.pi)
+    #print("Z_orr = ",yaw_z * 180/math.pi)
+    print("-------------------------------------------------------------- ")
     return pose_goal
 
 def add_pose_to_traj(move_group,  pose_goal):

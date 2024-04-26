@@ -71,9 +71,9 @@ from moveit_commander.conversions import pose_to_list
 
 ## END_SUB_TUTORIAL
 
-COORD_X_OBJET = -0.40
-COORD_Y_OBJET = 0.35
-COORD_Z_OBJET = 0.55
+COORD_X_OBJET = 0.031806
+COORD_Y_OBJET = 0.936538 
+COORD_Z_OBJET = 0.1
 XC = COORD_X_OBJET
 YC = COORD_Y_OBJET
 former_pitch = 0
@@ -81,12 +81,10 @@ former_yaw_z = 0
 former_roll = 0
 first_time = True
 
-
-
-D = 0.50
+D = 0.3
 R = D/2
 
-def main():
+def main():  
     
     first_time = True
     input("Hello man, press enter when you are radis:")
@@ -109,7 +107,7 @@ def main():
     
     rospy.sleep(2)
 
-    add_box_to_scene(scene, robot)
+    #add_box_to_scene(scene, robot)
 
     # tourne autour de l'objet
     for i in range(9):
@@ -122,7 +120,6 @@ def main():
         )
         rospy.sleep(1)
         
-        ##if(i%2 ==0 ):
         add_pose_to_traj(move_group ,new_pose)
 
 

@@ -6,4 +6,6 @@
   <xacro:hc10_gazebo arm_id=""/>
   <xacro:include filename="$(find motoman_hc10_support)/urdf/hc10.control.xacro"/>
   <xacro:hc10_control arm_id=""/>
+  <xacro:include filename="$(find motoman_hc10_support)/urdf/kinect_macro.xacro" />
+  <xacro:motoman_hc10_kinect prefix=""/>
 </robot>

@@ -3,6 +3,9 @@
 ## Environment setup
 
 Clone the repo 
+```bash
+git clone https://github.com/Bp91230/Projet_integration_ROS.git
+```
 
 Setup environment
 ```bash

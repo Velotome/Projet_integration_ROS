@@ -39,14 +39,6 @@
         <joint name="joint_5_b" value="0"/>
         <joint name="joint_6_t" value="0"/>
     </group_state>
-    <group_state name="Init_Pose" group="hc10_arm">
-        <joint name="joint_1_s" value="2.3"/>
-        <joint name="joint_2_l" value="-0.75"/>
-        <joint name="joint_3_u" value="0"/>
-        <joint name="joint_4_r" value="-1.39"/>
-        <joint name="joint_5_b" value="0.6"/>
-        <joint name="joint_6_t" value="-0.68"/>
-    </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <end_effector name="tool" parent_link="link_6_t" group="hc10_tool"/>
     <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->

@@ -1,4 +1,4 @@
-# Projet_integration_ROS
+# ROS Integration project
 
 The customer wanted to have a system capable of scanning a 3D object in the real world by using a depth camera and a 6-axis industrial robotic arm.
 This project aims to answer this need by producing an accurate simulation of the environment. We simulate all the components of the system, namely a robotic arm, a depth camera and the obstacles around the robot.
